@@ -101,12 +101,18 @@ class ImagensController extends AppController {
     }
 
     public function loadimg($controller=null, $id=null) {
-        $this->layout = "ajax";
-        $imgs = $this->Imagem->find("all", array("fields" => "id, nome, model, utilidade", "conditions" => array("Imagem.model = '" . $controller . "'", "Imagem.idreferente = '" . $id . "'")));
 
-        $file = json_encode($imgs);
-
-        $this->set("file", $file);
+        $imgs = $this->Imagem->find('all',
+            array(
+                'fields' => array('id','nome','model','utilidade'),
+                'conditions' => array(
+                    'Imagem.model' => $controller, 
+                    'Imagem.idreferente' => $id,
+                )
+            )
+        );
+        
+        return new CakeResponse(array('body' => json_encode($imgs)));
     }
 
     public function savedata() {
